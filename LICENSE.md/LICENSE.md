@@ -1,1 +1,1 @@
-copyrights reserved
+copyright reserved
