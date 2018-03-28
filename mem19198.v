@@ -22,7 +22,7 @@
 module mem19198
 #(
     parameter   WORD_WIDETH         8,
-    parameter   INPUT_DATA_PIN      32
+    parameter   INPUT_DATA_PIN      WORD_WIDETH*4
 )
 (
     input                                   clk,
@@ -649,21 +649,85 @@ reg [WORD_WIDETH-1:0]           mem1817;
 reg [WORD_WIDETH-1:0]           mem1818;
 
 /**********************************************************************************************************************/
-/************************INPUT Logic *********************************************************************************/
+/************************ INPUT Logic *********************************************************************************/
 /**********************************************************************************************************************/
-reg [WORD_WIDETH*19-1:0]    input_buffer;
-reg [WORD_WIDETH*3-1:0]     input_extra_buffer;
-reg [4:0]                   input_countr;
+reg [WORD_WIDETH*19-1:0]    input_buffer; //[151:0]
+reg [WORD_WIDETH*3-1:0]     input_extra_buffer; //[23:0]
+reg [4:0]                   input_counter;
+
+// en_input signal last for  at least 20 cycle for input_counter go from 0 to b10011
 always @ (clk)
 begin
-    if(en_input) input_countr <= input_countr+1'b1;
-    else input_countr <= 0;
+    if(en_input) input_counter <= input_counter+1'b1;
+    else input_counter <= 0;
 end
 
-/************************INPUT Logic END****************************/
+always @ (clk)
+begin
+    case ({en_input, input_counter}) //Number of digits need to match
+    6'b100000: {input_buffer, input_extra_buffer} <= {input_raw[WORD_WIDETH*4-1:0],                         input_buffer[WORD_WIDETH*15-1:0],   input_extra_buffer[WORD_WIDETH*3-1:0]};
+    6'b100001: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*15],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*11-1:0], input_extra_buffer};
+    6'b100010: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*11],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*7-1:0], input_extra_buffer};
+    6'b100011: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*7],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*3-1:0], input_extra_buffer};
+    6'b100100: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*3],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*2-1:0]}; //push to reg
+    6'b100101: {input_buffer, input_extra_buffer} <= {input_extra_buffer[WORD_WIDETH*3-1:WORD_WIDETH*2],    input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*14-1:0], input_extra_buffer};
+    6'b100110: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*14],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*10-1:0], input_extra_buffer};
+    6'b100111: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*10],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*6-1:0], input_extra_buffer};
+    6'b101000: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*6],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*2-1:0], input_extra_buffer};
+    6'b101001: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*2],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*1-1:0]}; //push to reg
+    6'b101010: {input_buffer, input_extra_buffer} <= {input_extra_buffer[WORD_WIDETH*3-1:WORD_WIDETH*1],    input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*13-1:0], input_extra_buffer};
+    6'b101011: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*13],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*9-1:0], input_extra_buffer};
+    6'b101100: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*9],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*5-1:0], input_extra_buffer};
+    6'b101101: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*5],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*1-1:0], input_extra_buffer};
+    6'b101110: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*1],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*1-1:0]}; //push to reg
+    6'b101111: {input_buffer, input_extra_buffer} <= {input_extra_buffer[WORD_WIDETH*3-1:0],                input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*12-1:0], input_extra_buffer};
+    6'b110000: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*12],        input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*8-1:0], input_extra_buffer};
+    6'b110001: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*8],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*4-1:0], input_extra_buffer};
+    6'b110010: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*4],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*3-1:0]}; //push to reg
+    default: {input_buffer, input_extra_buffer} <= (WORD_WIDETH*22)'b0;
+    endcase
+end
+
+always @ (clk)
+begin
+    if({en_input,input_counter} == 6'b100101)
+    {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518} <= input_buffer;
+    else 
+    {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518} 
+    <= {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518};
+end
+
+always @ (clk)
+begin
+    if({en_input,input_counter} == 6'b101010)
+    {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618} <= input_buffer;
+    else 
+    {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618} 
+    <= {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618};
+end
+
+always @ (clk)
+begin
+    if({en_input,input_counter} == 6'b101111)
+    {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718} <= input_buffer;
+    else
+    {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718} 
+    <= {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718};
+end
+
+always @ (clk)
+begin
+    if({en_input,input_counter} == 6'b110011)
+    {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818} <= input_buffer;
+    else
+    {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818} 
+    <= {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818};
+end
+
+/************************ INPUT Logic END ****************************/
 
 /**********************************************************************************************************************/
-/************************SWITCH Logic *********************************************************************************/
+/************************ SWITCH Logic ********************************************************************************/
 /**********************************************************************************************************************/
 always @ (clk)
 begin
@@ -1386,10 +1450,10 @@ begin
 end
 
 
-/************************SWITCH Logic END*******************/
+/************************ SWITCH Logic END *******************/
 
 /**********************************************************************************************************************/
-/************************OUTPUT Logic *********************************************************************************/
+/************************ OUTPUT Logic ********************************************************************************/
 /**********************************************************************************************************************/
 always @ (clk)
     begin
@@ -7022,5 +7086,5 @@ always @ (clk)
     4'hf: pe15_in15 <= mem1818;
     endcase
 end
-/************************OUTPUT Logic END************************/
+/************************ OUTPUT Logic END ************************/
 endmodule
