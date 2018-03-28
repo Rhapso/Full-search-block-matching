@@ -21,14 +21,21 @@ module mem20(
     input                       clk,
     input       [7:0]           coordinate,
     input       [11:0]          mad,
-    output reg                  serialport
+    input                       en_input,
+    output reg                  s_out_port
 )
 
-reg [19:0]  outputReg;
+reg [19:0]  buffer20;
 
 always @ (clk)
 begin
-  
+    if(en_input) buffer20 <= {coordinate, mad};
+    else buffer20 << 1;
+end
+
+always @ (clk)
+begin
+    s_out_port <= buffer20[19];
 end
 
 endmodule
