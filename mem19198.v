@@ -698,29 +698,33 @@ reg [4:0]                   input_counter;
 reg [4:0]                   target_line;
 
 wire buffer_ready;
-assign buffer_ready = (input_counter == 5'b00101 || input_counter == 5'b01010 || input_counter == 5'b01111 || input_counter == 5'b10011) ? 1'b1 : 1'b0;
+assign buffer_ready = (input_counter == 5'b00101 || input_counter == 5'b01010 || input_counter == 5'b01111 || input_counter == 5'b10011);
 
 // en_input signal last for  at least 20 cycle for input_counter go from 0 to b10011
 always @ (posedge clk)
 begin
-    if(!rst_n && en_input) input_counter <= input_counter == 5'b10011 ? 5'b00000 : input_counter + 5'b00001;
+    if(rst_n && en_input) input_counter <= input_counter == 5'b10011 ? 5'b00000 : input_counter + 5'b00001;
     else input_counter <= 5'b0;
 end
 
-/// target line logic UNFINISHED UNFINISHED UNFINISHED!!!
+// target line logic
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
-        if(init_mode) target_line <= target_line == 5'b10011 ? 5'b0 : target_line + 5'b00001;
-        else(!init_mode) target_line <= target_line == 5'b10011 ? 5'b10000 : target_line + 5'b00001;
+        if(init_mode && buffer_ready) target_line <= target_line == 5'b10010 ? 5'b0 : target_line + 5'b00001;
+        else if(!init_mode && buffer_ready) target_line <= target_line == 5'b10010 ? 5'b01111 : target_line + 5'b00001;
+        else target_line <= target_line;
+    end
+    else
+    begin
+        target_line <= 5'b0;
     end
 end
-////////////////////////////////////////////////////
 
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         case ({en_input, input_counter})
         6'b100000: {input_buffer, input_extra_buffer} <= {input_raw[WORD_WIDETH*4-1:0],                         input_buffer[WORD_WIDETH*15-1:0],   input_extra_buffer[WORD_WIDETH*3-1:0]};
@@ -752,43 +756,6 @@ begin
     end
 end
 
-always @ (posedge clk)
-begin
-    if({en_input,input_counter} == 6'b100101)
-    {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518} <= input_buffer;
-    else 
-    {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518} 
-    <= {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518};
-end
-
-always @ (posedge clk)
-begin
-    if({en_input,input_counter} == 6'b101010)
-    {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618} <= input_buffer;
-    else 
-    {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618} 
-    <= {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618};
-end
-
-always @ (posedge clk)
-begin
-    if({en_input,input_counter} == 6'b101111)
-    {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718} <= input_buffer;
-    else
-    {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718} 
-    <= {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718};
-end
-
-always @ (posedge clk)
-begin
-    if({en_input,input_counter} == 6'b110011)
-    {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818} <= input_buffer;
-    else
-    {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818} 
-    <= {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818};
-end
-
-
 /************************ INPUT Logic END ****************************/
 
 /**********************************************************************************************************************/
@@ -798,7 +765,7 @@ end
 //line00
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00000 && buffer_ready)
         begin
@@ -825,7 +792,7 @@ end
 //line01
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00001 && buffer_ready)
         begin
@@ -852,7 +819,7 @@ end
 //line02
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00010 && buffer_ready)
         begin
@@ -879,7 +846,7 @@ end
 //line03
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00011 && buffer_ready)
         begin
@@ -906,7 +873,7 @@ end
 //line04
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00100 && buffer_ready)
         begin
@@ -933,7 +900,7 @@ end
 //line05
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00101 && buffer_ready)
         begin
@@ -960,7 +927,7 @@ end
 //line06
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00110 && buffer_ready)
         begin
@@ -987,7 +954,7 @@ end
 //line07
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b00111 && buffer_ready)
         begin
@@ -1014,7 +981,7 @@ end
 //line08
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01000 && buffer_ready)
         begin
@@ -1041,7 +1008,7 @@ end
 //line09
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01001 && buffer_ready)
         begin
@@ -1068,7 +1035,7 @@ end
 //line10
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01010 && buffer_ready)
         begin
@@ -1095,7 +1062,7 @@ end
 //line11
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01011 && buffer_ready)
         begin
@@ -1122,7 +1089,7 @@ end
 //line12
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01100 && buffer_ready)
         begin
@@ -1149,7 +1116,7 @@ end
 //line13
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01101 && buffer_ready)
         begin
@@ -1176,7 +1143,7 @@ end
 //line14
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01110 && buffer_ready)
         begin
@@ -1203,7 +1170,7 @@ end
 //line15
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b01111 && buffer_ready)
         begin
@@ -1230,7 +1197,7 @@ end
 //line16
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b10000 && buffer_ready)
         begin
@@ -1257,7 +1224,7 @@ end
 //line17
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b10001 && buffer_ready)
         begin
@@ -1284,7 +1251,7 @@ end
 //line18
 always @ (posedge clk)
 begin
-    if(!rst_n)
+    if(rst_n)
     begin
         if(init_mode && target_line == 5'b10010 && buffer_ready)
         begin
