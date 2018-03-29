@@ -22,18 +22,26 @@ module mem20(
     input       [7:0]           coordinate,
     input       [11:0]          mad,
     input                       en_input,
+    input                       rst_n,
     output reg                  s_out_port
 )
 
 reg [19:0]  buffer20;
 
-always @ (clk)
+always @ (posedge clk)
 begin
-    if(en_input) buffer20 <= {coordinate, mad};
-    else buffer20 << 1;
+    if(rst_n)
+    begin
+        if(en_input) buffer20 <= {coordinate, mad};
+        else buffer20 << 1;\
+    end
+    else
+    begin
+        buffer20 <= 20'b0;
+    end
 end
 
-always @ (clk)
+always @ (posedge clk)
 begin
     s_out_port <= buffer20[19];
 end
