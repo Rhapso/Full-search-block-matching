@@ -19,7 +19,7 @@
 *****************************************************************/ 
 module ctr
 #(
-  parameter   WORD_WIDETH       8
+  parameter   WORD_WIDETH =     8
 )
 (
     input                       clk,
@@ -46,6 +46,7 @@ begin
         mem_en_input <= 1'b0;
         mem_init_mode <= 1'b0;
     end
-
+    endcase
+end
 
 endmodule

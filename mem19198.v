@@ -21,7 +21,7 @@
 
 module mem19198
 #(
-    parameter   WORD_WIDETH         8
+    parameter   WORD_WIDETH =       8
 )
 (
     input                                   clk,
@@ -669,25 +669,25 @@ wire [WORD_WIDETH*19-1:0]       memline16;
 wire [WORD_WIDETH*19-1:0]       memline17;
 wire [WORD_WIDETH*19-1:0]       memline18;
 
-assign wire memline00 = {mem0000,mem0001,mem0002,mem0003,mem0004,mem0005,mem0006,mem0007,mem0008,mem0009,mem0010,mem0011,mem0012,mem0013,mem0014,mem0015,mem0016,mem0017,mem0018};
-assign wire memline01 = {mem0100,mem0101,mem0102,mem0103,mem0104,mem0105,mem0106,mem0107,mem0108,mem0109,mem0110,mem0111,mem0112,mem0113,mem0114,mem0115,mem0116,mem0117,mem0118};
-assign wire memline02 = {mem0200,mem0201,mem0202,mem0203,mem0204,mem0205,mem0206,mem0207,mem0208,mem0209,mem0210,mem0211,mem0212,mem0213,mem0214,mem0215,mem0216,mem0217,mem0218};
-assign wire memline03 = {mem0300,mem0301,mem0302,mem0303,mem0304,mem0305,mem0306,mem0307,mem0308,mem0309,mem0310,mem0311,mem0312,mem0313,mem0314,mem0315,mem0316,mem0317,mem0318};
-assign wire memline04 = {mem0400,mem0401,mem0402,mem0403,mem0404,mem0405,mem0406,mem0407,mem0408,mem0409,mem0410,mem0411,mem0412,mem0413,mem0414,mem0415,mem0416,mem0417,mem0418};
-assign wire memline05 = {mem0500,mem0501,mem0502,mem0503,mem0504,mem0505,mem0506,mem0507,mem0508,mem0509,mem0510,mem0511,mem0512,mem0513,mem0514,mem0515,mem0516,mem0517,mem0518};
-assign wire memline06 = {mem0600,mem0601,mem0602,mem0603,mem0604,mem0605,mem0606,mem0607,mem0608,mem0609,mem0610,mem0611,mem0612,mem0613,mem0614,mem0615,mem0616,mem0617,mem0618};
-assign wire memline07 = {mem0700,mem0701,mem0702,mem0703,mem0704,mem0705,mem0706,mem0707,mem0708,mem0709,mem0710,mem0711,mem0712,mem0713,mem0714,mem0715,mem0716,mem0717,mem0718};
-assign wire memline08 = {mem0800,mem0801,mem0802,mem0803,mem0804,mem0805,mem0806,mem0807,mem0808,mem0809,mem0810,mem0811,mem0812,mem0813,mem0814,mem0815,mem0816,mem0817,mem0818};
-assign wire memline09 = {mem0900,mem0901,mem0902,mem0903,mem0904,mem0905,mem0906,mem0907,mem0908,mem0909,mem0910,mem0911,mem0912,mem0913,mem0914,mem0915,mem0916,mem0917,mem0918};
-assign wire memline10 = {mem1000,mem1001,mem1002,mem1003,mem1004,mem1005,mem1006,mem1007,mem1008,mem1009,mem1010,mem1011,mem1012,mem1013,mem1014,mem1015,mem1016,mem1017,mem1018};
-assign wire memline11 = {mem1100,mem1101,mem1102,mem1103,mem1104,mem1105,mem1106,mem1107,mem1108,mem1109,mem1110,mem1111,mem1112,mem1113,mem1114,mem1115,mem1116,mem1117,mem1118};
-assign wire memline12 = {mem1200,mem1201,mem1202,mem1203,mem1204,mem1205,mem1206,mem1207,mem1208,mem1209,mem1210,mem1211,mem1212,mem1213,mem1214,mem1215,mem1216,mem1217,mem1218};
-assign wire memline13 = {mem1300,mem1301,mem1302,mem1303,mem1304,mem1305,mem1306,mem1307,mem1308,mem1309,mem1310,mem1311,mem1312,mem1313,mem1314,mem1315,mem1316,mem1317,mem1318};
-assign wire memline14 = {mem1400,mem1401,mem1402,mem1403,mem1404,mem1405,mem1406,mem1407,mem1408,mem1409,mem1410,mem1411,mem1412,mem1413,mem1414,mem1415,mem1416,mem1417,mem1418};
-assign wire memline15 = {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518};
-assign wire memline16 = {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618};
-assign wire memline17 = {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718};
-assign wire memline18 = {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818};
+assign memline00 = {mem0000,mem0001,mem0002,mem0003,mem0004,mem0005,mem0006,mem0007,mem0008,mem0009,mem0010,mem0011,mem0012,mem0013,mem0014,mem0015,mem0016,mem0017,mem0018};
+assign memline01 = {mem0100,mem0101,mem0102,mem0103,mem0104,mem0105,mem0106,mem0107,mem0108,mem0109,mem0110,mem0111,mem0112,mem0113,mem0114,mem0115,mem0116,mem0117,mem0118};
+assign memline02 = {mem0200,mem0201,mem0202,mem0203,mem0204,mem0205,mem0206,mem0207,mem0208,mem0209,mem0210,mem0211,mem0212,mem0213,mem0214,mem0215,mem0216,mem0217,mem0218};
+assign memline03 = {mem0300,mem0301,mem0302,mem0303,mem0304,mem0305,mem0306,mem0307,mem0308,mem0309,mem0310,mem0311,mem0312,mem0313,mem0314,mem0315,mem0316,mem0317,mem0318};
+assign memline04 = {mem0400,mem0401,mem0402,mem0403,mem0404,mem0405,mem0406,mem0407,mem0408,mem0409,mem0410,mem0411,mem0412,mem0413,mem0414,mem0415,mem0416,mem0417,mem0418};
+assign memline05 = {mem0500,mem0501,mem0502,mem0503,mem0504,mem0505,mem0506,mem0507,mem0508,mem0509,mem0510,mem0511,mem0512,mem0513,mem0514,mem0515,mem0516,mem0517,mem0518};
+assign memline06 = {mem0600,mem0601,mem0602,mem0603,mem0604,mem0605,mem0606,mem0607,mem0608,mem0609,mem0610,mem0611,mem0612,mem0613,mem0614,mem0615,mem0616,mem0617,mem0618};
+assign memline07 = {mem0700,mem0701,mem0702,mem0703,mem0704,mem0705,mem0706,mem0707,mem0708,mem0709,mem0710,mem0711,mem0712,mem0713,mem0714,mem0715,mem0716,mem0717,mem0718};
+assign memline08 = {mem0800,mem0801,mem0802,mem0803,mem0804,mem0805,mem0806,mem0807,mem0808,mem0809,mem0810,mem0811,mem0812,mem0813,mem0814,mem0815,mem0816,mem0817,mem0818};
+assign memline09 = {mem0900,mem0901,mem0902,mem0903,mem0904,mem0905,mem0906,mem0907,mem0908,mem0909,mem0910,mem0911,mem0912,mem0913,mem0914,mem0915,mem0916,mem0917,mem0918};
+assign memline10 = {mem1000,mem1001,mem1002,mem1003,mem1004,mem1005,mem1006,mem1007,mem1008,mem1009,mem1010,mem1011,mem1012,mem1013,mem1014,mem1015,mem1016,mem1017,mem1018};
+assign memline11 = {mem1100,mem1101,mem1102,mem1103,mem1104,mem1105,mem1106,mem1107,mem1108,mem1109,mem1110,mem1111,mem1112,mem1113,mem1114,mem1115,mem1116,mem1117,mem1118};
+assign memline12 = {mem1200,mem1201,mem1202,mem1203,mem1204,mem1205,mem1206,mem1207,mem1208,mem1209,mem1210,mem1211,mem1212,mem1213,mem1214,mem1215,mem1216,mem1217,mem1218};
+assign memline13 = {mem1300,mem1301,mem1302,mem1303,mem1304,mem1305,mem1306,mem1307,mem1308,mem1309,mem1310,mem1311,mem1312,mem1313,mem1314,mem1315,mem1316,mem1317,mem1318};
+assign memline14 = {mem1400,mem1401,mem1402,mem1403,mem1404,mem1405,mem1406,mem1407,mem1408,mem1409,mem1410,mem1411,mem1412,mem1413,mem1414,mem1415,mem1416,mem1417,mem1418};
+assign memline15 = {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518};
+assign memline16 = {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618};
+assign memline17 = {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718};
+assign memline18 = {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818};
 
 /**********************************************************************************************************************/
 /************************ INPUT Logic *********************************************************************************/
@@ -747,12 +747,12 @@ begin
         6'b110001: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*8],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*4-1:0], input_extra_buffer};
         6'b110010: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*4],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*3-1:0]}; //push to reg
         6'b110011: {input_buffer, input_extra_buffer} <= {input_buffer, input_extra_buffer};
-        default: {input_buffer, input_extra_buffer} <= (WORD_WIDETH*22)'b0;
+        default: {input_buffer, input_extra_buffer} <= 0;
         endcase
     end
     else 
     begin
-        {input_buffer, input_extra_buffer} <= (WORD_WIDETH*22)'b0;
+        {input_buffer, input_extra_buffer} <= 0;
     end
 end
 
@@ -786,7 +786,7 @@ begin
     else
     begin
         {mem0000,mem0001,mem0002,mem0003,mem0004,mem0005,mem0006,mem0007,mem0008,mem0009,mem0010,mem0011,mem0012,mem0013,mem0014,mem0015,mem0016,mem0017,mem0018}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line01
@@ -813,7 +813,7 @@ begin
     else
     begin
         {mem0100,mem0101,mem0102,mem0103,mem0104,mem0105,mem0106,mem0107,mem0108,mem0109,mem0110,mem0111,mem0112,mem0113,mem0114,mem0115,mem0116,mem0117,mem0118}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line02
@@ -840,7 +840,7 @@ begin
     else
     begin
         {mem0200,mem0201,mem0202,mem0203,mem0204,mem0205,mem0206,mem0207,mem0208,mem0209,mem0210,mem0211,mem0212,mem0213,mem0214,mem0215,mem0216,mem0217,mem0218}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line03
@@ -867,7 +867,7 @@ begin
     else
     begin
         {mem0300,mem0301,mem0302,mem0303,mem0304,mem0305,mem0306,mem0307,mem0308,mem0309,mem0310,mem0311,mem0312,mem0313,mem0314,mem0315,mem0316,mem0317,mem0318}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line04
@@ -894,7 +894,7 @@ begin
     else
     begin
         {mem0400,mem0401,mem0402,mem0403,mem0404,mem0405,mem0406,mem0407,mem0408,mem0409,mem0410,mem0411,mem0412,mem0413,mem0414,mem0415,mem0416,mem0417,mem0418}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line05
@@ -921,7 +921,7 @@ begin
     else
     begin
         {mem0500,mem0501,mem0502,mem0503,mem0504,mem0505,mem0506,mem0507,mem0508,mem0509,mem0510,mem0511,mem0512,mem0513,mem0514,mem0515,mem0516,mem0517,mem0518}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line06
@@ -948,7 +948,7 @@ begin
     else
     begin
         {mem0600,mem0601,mem0602,mem0603,mem0604,mem0605,mem0606,mem0607,mem0608,mem0609,mem0610,mem0611,mem0612,mem0613,mem0614,mem0615,mem0616,mem0617,mem0618}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line07
@@ -975,7 +975,7 @@ begin
     else
     begin
         {mem0700,mem0701,mem0702,mem0703,mem0704,mem0705,mem0706,mem0707,mem0708,mem0709,mem0710,mem0711,mem0712,mem0713,mem0714,mem0715,mem0716,mem0717,mem0718}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line08
@@ -1002,7 +1002,7 @@ begin
     else
     begin
         {mem0800,mem0801,mem0802,mem0803,mem0804,mem0805,mem0806,mem0807,mem0808,mem0809,mem0810,mem0811,mem0812,mem0813,mem0814,mem0815,mem0816,mem0817,mem0818}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line09
@@ -1029,7 +1029,7 @@ begin
     else
     begin
         {mem0900,mem0901,mem0902,mem0903,mem0904,mem0905,mem0906,mem0907,mem0908,mem0909,mem0910,mem0911,mem0912,mem0913,mem0914,mem0915,mem0916,mem0917,mem0918}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line10
@@ -1056,7 +1056,7 @@ begin
     else
     begin
         {mem1000,mem1001,mem1002,mem1003,mem1004,mem1005,mem1006,mem1007,mem1008,mem1009,mem1010,mem1011,mem1012,mem1013,mem1014,mem1015,mem1016,mem1017,mem1018}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line11
@@ -1083,7 +1083,7 @@ begin
     else
     begin
         {mem1100,mem1101,mem1102,mem1103,mem1104,mem1105,mem1106,mem1107,mem1108,mem1109,mem1110,mem1111,mem1112,mem1113,mem1114,mem1115,mem1116,mem1117,mem1118}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line12
@@ -1110,7 +1110,7 @@ begin
     else
     begin
         {mem1200,mem1201,mem1202,mem1203,mem1204,mem1205,mem1206,mem1207,mem1208,mem1209,mem1210,mem1211,mem1212,mem1213,mem1214,mem1215,mem1216,mem1217,mem1218}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line13
@@ -1137,7 +1137,7 @@ begin
     else
     begin
         {mem1300,mem1301,mem1302,mem1303,mem1304,mem1305,mem1306,mem1307,mem1308,mem1309,mem1310,mem1311,mem1312,mem1313,mem1314,mem1315,mem1316,mem1317,mem1318}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line14
@@ -1164,7 +1164,7 @@ begin
     else
     begin
         {mem1400,mem1401,mem1402,mem1403,mem1404,mem1405,mem1406,mem1407,mem1408,mem1409,mem1410,mem1411,mem1412,mem1413,mem1414,mem1415,mem1416,mem1417,mem1418}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line15
@@ -1191,7 +1191,7 @@ begin
     else
     begin
         {mem1500,mem1501,mem1502,mem1503,mem1504,mem1505,mem1506,mem1507,mem1508,mem1509,mem1510,mem1511,mem1512,mem1513,mem1514,mem1515,mem1516,mem1517,mem1518}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line16
@@ -1218,7 +1218,7 @@ begin
     else
     begin
         {mem1600,mem1601,mem1602,mem1603,mem1604,mem1605,mem1606,mem1607,mem1608,mem1609,mem1610,mem1611,mem1612,mem1613,mem1614,mem1615,mem1616,mem1617,mem1618}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line17
@@ -1245,7 +1245,7 @@ begin
     else
     begin
         {mem1700,mem1701,mem1702,mem1703,mem1704,mem1705,mem1706,mem1707,mem1708,mem1709,mem1710,mem1711,mem1712,mem1713,mem1714,mem1715,mem1716,mem1717,mem1718}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 //line18
@@ -1272,7 +1272,7 @@ begin
     else
     begin
         {mem1800,mem1801,mem1802,mem1803,mem1804,mem1805,mem1806,mem1807,mem1808,mem1809,mem1810,mem1811,mem1812,mem1813,mem1814,mem1815,mem1816,mem1817,mem1818}
-        <= (WORD_WIDETH*19-1)'b0;
+        <= 0;
     end
 end
 /************************ mem write Logic END *******************/

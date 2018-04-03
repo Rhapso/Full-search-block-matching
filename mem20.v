@@ -24,7 +24,7 @@ module mem20(
     input                       en_input,
     input                       rst_n,
     output reg                  s_out_port
-)
+);
 
 reg [19:0]  buffer20;
 
@@ -33,7 +33,7 @@ begin
     if(rst_n)
     begin
         if(en_input) buffer20 <= {coordinate, mad};
-        else buffer20 << 1;\
+        else buffer20 <= buffer20 << 1;
     end
     else
     begin
