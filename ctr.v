@@ -39,7 +39,7 @@ reg [4:0]                 counter_24;
 always @ (posedge clk)
 begin
     if(rst_n) input_raw_saved <= input_raw;
-    else(rst_n) input_raw_saved <= 0;
+    else input_raw_saved <= 0;
 end
 
 always @ (posedge clk)
@@ -47,12 +47,6 @@ begin
     if(rst_n && !en_init && counter_24 != 5'b10111) counter_24 <= counter_24 + 5'b00001;
     else counter_24 <= 5'b0;
 end
-
-always @ (posedge clk)
-begin
-    if(rst_n)
-
-
 
 always @ (posedge clk)
 begin
