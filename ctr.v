@@ -46,7 +46,7 @@ always @ (posedge clk)
 begin
     if(rst_n && !en_init && counter_24 != 5'b10111) counter_24 <= counter_24 + 5'b00001;
     else counter_24 <= 5'b0;
-end
+end 
 
 always @ (posedge clk)
 begin
