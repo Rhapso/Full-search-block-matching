@@ -1,5 +1,7 @@
 module PE(
 	input clk,
+	input enable,
+
 	input [7:0] a00,
 	input [7:0] a01,
 	input [7:0] a02,
@@ -34,87 +36,108 @@ module PE(
 	input [7:0] b32,
 	input [7:0] b33,
 
-	input reset,
+	input rst,
 	output reg [11:0] sum
 );
 
-reg [7:0] a [0:15];
-reg [7:0] b [0:15];
-reg [7:0] quotient [0:15];
 reg [7:0] abs_value [0:15];
 reg [8:0] sum1 [0:7];
 reg [9:0] sum2 [0:3];
 reg [10:0] sum3 [0:1];
 
-integer i;
-
-always @ (*)
-begin
-	a[0]=a00;
-	a[1]=a01;
-	a[2]=a02;
-	a[3]=a03;
-	a[4]=a10;
-	a[5]=a11;
-	a[6]=a12;
-	a[7]=a13;
-	a[8]=a20;
-	a[9]=a21;
-	a[10]=a22;
-	a[11]=a23;
-	a[12]=a30;
-	a[13]=a31;
-	a[14]=a32;
-	a[15]=a33;
-	
-	b[0]=b00;
-	b[1]=b01;
-	b[2]=b02;
-	b[3]=b03;
-	b[4]=b10;
-	b[5]=b11;
-	b[6]=b12;
-	b[7]=b13;
-	b[8]=b20;
-	b[9]=b21;
-	b[10]=b22;
-	b[11]=b23;
-	b[12]=b30;
-	b[13]=b31;
-	b[14]=b32;
-	b[15]=b33;
-end
-
 always @ (posedge clk)
 begin
-	if(!reset)
+	if(!rst & enable)
 	begin
-		for(i=0;i<16;i=i+1)
-		begin
-			quotient[i] = a[i] - b[i];
-			abs_value[i] = abs(quotient[i]);
-		end
-		for(i=0;i<8;i=i+1)
-		begin
-			sum1[i] = abs_value[i] + abs_value[15-i];
-		end
-		for(i=0;i<4;i=i+1)
-		begin
-			sum2[i] = sum1[i] + sum1[7-i];
-		end
-		for(i=0;i<2;i=i+1)
-		begin
-			sum3[i] = sum2[i] + sum2[3-i];
-		end
+
+		if(a00>b00)
+			abs_value[0] = a00 - b00;
+		else
+			abs_value[0] = b00 - a00;
+		if(a01>b01)
+			abs_value[1] = a01 - b01;
+		else
+			abs_value[1] = b01 - a01;
+		if(a02>b02)
+			abs_value[2] = a02 - b02;
+		else
+			abs_value[2] = b02 - a02;
+		if(a03>b03)
+			abs_value[3] = a03 - b03;
+		else
+			abs_value[3] = b03 - a03;
+		
+		if(a10>b10)
+			abs_value[4] = a10 - b10;
+		else
+			abs_value[4] = b10 - a10;
+		if(a11>b11)
+			abs_value[5] = a11 - b11;
+		else
+			abs_value[5] = b11 - a11;
+		if(a12>b12)
+			abs_value[6] = a12 - b12;
+		else
+			abs_value[6] = b12 - a12;
+		if(a13>b13)
+			abs_value[7] = a13 - b13;
+		else
+			abs_value[7] = b13 - a13;
+
+		if(a20>b20)
+			abs_value[8] = a20 - b20;
+		else
+			abs_value[8] = b20 - a20;
+		if(a21>b21)
+			abs_value[9] = a21 - b21;
+		else
+			abs_value[9] = b21 - a21;
+		if(a22>b22)
+			abs_value[10] = a22 - b22;
+		else
+			abs_value[10] = b22 - a22;
+		if(a23>b23)
+			abs_value[11] = a23 - b23;
+		else
+			abs_value[11] = b23 - a23;
+
+		if(a30>b30)
+			abs_value[12] = a30 - b30;
+		else
+			abs_value[12] = b30 - a30;
+		if(a31>b31)
+			abs_value[13] = a31 - b31;
+		else
+			abs_value[13] = b31 - a31;
+		if(a32>b32)
+			abs_value[14] = a32 - b32;
+		else
+			abs_value[14] = b32 - a32;
+		if(a33>b33)
+			abs_value[15] = a33 - b33;
+		else
+			abs_value[15] = b33 - a33;
+
+		sum1[0] = abs_value[0] + abs_value[15];
+		sum1[1] = abs_value[1] + abs_value[14];
+		sum1[2] = abs_value[2] + abs_value[13];
+		sum1[3] = abs_value[3] + abs_value[12];
+		sum1[4] = abs_value[4] + abs_value[11];
+		sum1[5] = abs_value[5] + abs_value[10];
+		sum1[6] = abs_value[6] + abs_value[9];
+		sum1[7] = abs_value[7] + abs_value[8];
+		sum1[8] = abs_value[8] + abs_value[7];
+
+		sum2[0] = sum1[0] + sum1[7];
+		sum2[1] = sum1[1] + sum1[6];
+		sum2[2] = sum1[2] + sum1[5];
+		sum2[3] = sum1[3] + sum1[4];
+
+		sum3[0] = sum2[0] + sum2[3];
+		sum3[1] = sum2[1] + sum2[2];
+
 		sum = sum3[0] + sum3[1];
 	end
 end
 
-function [7:0]abs;
-	input [7:0]a;
-	if(a[7]==0)
-		abs = a;
-	else
-		abs = ~a + 1;
-endfunction
 endmodule
