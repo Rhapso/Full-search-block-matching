@@ -1,8 +1,8 @@
 /**************************************************************** 
-  ** Title : testbench
+  ** Title : imginput
   ** Project :  full-search block matching algorithm on VLSI
 ***************************************************************** 
-  ** File :  testbench.v
+  ** File :  imginput.v
   ** Author : fzp
   ** Organization: sjtu
   ** Created :  
@@ -19,12 +19,17 @@
 *****************************************************************/ 
 initial
 
-
-module testbench
+module imginput
 (
     input [21:0] count,
     output [33:0] data
 );
 	reg [33:0] mem[4194304:0];
+  $readmemb("D:/SpringSemOfGrade3/DICDesign2018/testingFile/1080p/ME/img_flow.txt",mem);
+
+always @ (count)
+begin
+    data <= mem[count];
+end
 
 endmodule
