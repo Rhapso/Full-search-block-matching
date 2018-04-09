@@ -28,16 +28,25 @@
 
 module me_on_chip
 #(
-    parameter WORD_WIDETH = 8
+    parameter WORD_WIDETH =                 8
 )
 (
-    input a,
-    output reg b
+    input                   clk,
+    input                   init,
+    input [WORD_WIDETH*4-1] input_raw,
+    input                   rst_n,
+    output reg              serial20
 );
+
+wire net_clk;
+wire net_rst_n;
+wire net_init;
+wire [31:0] net_input_raw;
+wire net_serial20;
 
 PIW 
 PIW_clk(.PAD(clk),.C(net_clk)), 
-PIW_rst_n(.PAD(rst_n),.C(net_rstn)), 
+PIW_rst_n(.PAD(rst_n),.C(net_rst_n)), 
 PIW_init(.PAD(init),.C(net_init)),  
 PIW_input_raw0(.PAD(input_raw[0]),.C(net_input_raw[0])), 
 PIW_input_raw1(.PAD(input_raw[1]),.C(net_input_raw[1])), 
@@ -74,5 +83,13 @@ PIW_input_raw31(.PAD(input_raw[31]),.C(net_input_raw[31]));
 
 PO8W 
 PO8W_serial20(.I(net_serial20),.PAD(serial20));
+
+me_top me_top(
+    .clk(net_clk),
+    .rst_n(net_rst_n),
+    .init(net_init),
+    .input_raw(net_input_raw),
+    .serial20(net_serial20)
+);
 
 endmodule
