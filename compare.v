@@ -19,7 +19,7 @@ module compare(
 	input [11:0] sum14,
 	input [11:0] sum15,
 
-	input rst,
+	input rst_n,
 	output reg [19:1] out
 );
 
@@ -54,7 +54,7 @@ always @ (posedge clk)
 begin
 	mad = sum[0];
 	c = 0;
-	if(!rst)
+	if(rst_n)
 	begin
 		for(i=1;i<16;i=i+1)
 		begin

@@ -36,7 +36,7 @@ module PE(
 	input [7:0] b32,
 	input [7:0] b33,
 
-	input rst,
+	input rst_n,
 	output reg [11:0] sum
 );
 
@@ -47,7 +47,7 @@ reg [10:0] sum3 [0:1];
 
 always @ (posedge clk)
 begin
-	if(!rst & enable)
+	if(rst_n & enable)
 	begin
 
 		if(a00>b00)
