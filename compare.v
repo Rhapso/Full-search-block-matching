@@ -80,7 +80,9 @@ begin
 		14:	mv = 8'h32;
 		15:	mv = 8'h33;
 		endcase
-	end	
+	end
+
+	out = {mad, mv}
 end
 
 endmodule
