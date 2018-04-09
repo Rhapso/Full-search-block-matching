@@ -17,15 +17,19 @@
 ***************************************************************** 
   ** Copyright (c) notice  
 *****************************************************************/ 
-initial
-
 module imginput
 (
-    input [21:0] count,
-    output [33:0] data
+    input       [21:0] count,
+    output reg  [33:0] data
 );
-	reg [33:0] mem[4194304:0];
-  $readmemb("D:/SpringSemOfGrade3/DICDesign2018/testingFile/1080p/ME/img_flow.txt",mem);
+// init data[1]
+// rst_n data[0]
+reg [33:0] mem[4194304:0];
+
+initial
+begin
+    $readmemb("D:/SpringSemOfGrade3/DICDesign2018/testingFile/1080p/ME/img_flow.txt",mem);
+end
 
 always @ (count)
 begin
