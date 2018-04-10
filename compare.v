@@ -20,7 +20,7 @@ module compare(
 	input reg [11:0] sum15,
 
 	input rst_n,
-	output reg [19:1] out
+	output reg [19:0] out
 );
 
 reg [11:0] mad;
@@ -82,7 +82,12 @@ begin
 		endcase
 	end
 
-	out <= {mad, mv}
+	out <= {mad, mv};
+
+end
+always @ (out)
+begin
+	$display("mad = %d, mv = %d.\n", out[19:8],out[7:0]);
 end
 
 endmodule
