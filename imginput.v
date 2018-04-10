@@ -28,7 +28,7 @@ reg [33:0] mem[4194304:0];
 
 initial
 begin
-    $readmemb("D:/SpringSemOfGrade3/DICDesign2018/testingFile/1080p/ME/img_flow.txt",mem);
+    $readmemb("D:/GitHub/img_flow.txt",mem);
 end
 
 always @ (count)
