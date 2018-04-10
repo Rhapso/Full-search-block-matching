@@ -29,22 +29,22 @@ reg [11:0] sum [0:15];
 
 always @ (*)
 begin
-	sum[0] = sum0;
-	sum[1] = sum1;
-	sum[2] = sum2;
-	sum[3] = sum3;
-	sum[4] = sum4;
-	sum[5] = sum5;
-	sum[6] = sum6;
-	sum[7] = sum7;
-	sum[8] = sum8;
-	sum[9] = sum9;
-	sum[10] = sum10;
-	sum[11] = sum11;
-	sum[12] = sum12;
-	sum[13] = sum13;
-	sum[14] = sum14;
-	sum[15] = sum15;
+	sum[0] <= sum0;
+	sum[1] <= sum1;
+	sum[2] <= sum2;
+	sum[3] <= sum3;
+	sum[4] <= sum4;
+	sum[5] <= sum5;
+	sum[6] <= sum6;
+	sum[7] <= sum7;
+	sum[8] <= sum8;
+	sum[9] <= sum9;
+	sum[10] <= sum10;
+	sum[11] <= sum11;
+	sum[12] <= sum12;
+	sum[13] <= sum13;
+	sum[14] <= sum14;
+	sum[15] <= sum15;
 end
 
 integer i;
@@ -54,7 +54,7 @@ always @ (posedge clk)
 begin
 	mad <= sum[0];
 	c = 0;
-	if(rst_n or enable)
+	if(rst_n & enable)
 	begin
 		for(i=1;i<16;i=i+1)
 		begin
