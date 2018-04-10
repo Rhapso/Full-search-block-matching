@@ -29,6 +29,30 @@ reg [3:0] mvx;
 reg [3:0] mvy;
 reg [11:0] sum [0:15];
 
+//initialize
+always @ (negedge rst_n)
+begin
+	mad <= 12'b0;
+	mvx <= 4'b0;
+	mvy <= 4'b0;
+	sum[0] <= 12'b0;
+	sum[1] <= 12'b0;
+	sum[2] <= 12'b0;
+	sum[3] <= 12'b0;
+	sum[4] <= 12'b0;
+	sum[5] <= 12'b0;
+	sum[6] <= 12'b0;
+	sum[7] <= 12'b0;
+	sum[8] <= 12'b0;
+	sum[9] <= 12'b0;
+	sum[10] <= 12'b0;
+	sum[11] <= 12'b0;
+	sum[12] <= 12'b0;
+	sum[13] <= 12'b0;
+	sum[14] <= 12'b0;
+	sum[15] <= 12'b0;
+end
+	
 always @ (*)
 begin
 	sum[0] <= sum0;
@@ -49,14 +73,6 @@ begin
 	sum[15] <= sum15;
 end
 	
-always @ (negedge rst_n)
-begin
-	mad <= 12'b0;
-	mvx <= 4'b0;
-	mvy <= 4'b0;
-	sum <= 12'b0;
-end
-
 integer i;
 integer c;
 
