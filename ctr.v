@@ -34,7 +34,9 @@ module ctr
     output reg  [WORD_WIDETH*4-1:0]         input_raw_saved,
     output reg                              en_pe
 );
-reg [4:0]                 counter_24;
+reg [4:0]                   counter_24;
+reg                         last_en_init_status;
+reg                         before_last_en_init_status;
 
 always @ (posedge clk)
 begin
@@ -50,235 +52,304 @@ end
 
 always @ (posedge clk)
 begin
-    if(en_init)
+    if(rst_n)
     begin
-        ctr_word <= 4'h0;
-        mem19198_en_input <= 1;
-        mem448_en_input <= 0;
-        mem20_en_input <= 0;
-        mem_init_mode <= 1;
-        en_pe <= 0;
+        last_en_init_status <= en_init;
     end
     else
     begin
-        case(counter_24) //certain signal: ctr_word, mem19198_en_input, mem448_en_input, mem_init_mode, en_pe
-        0:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 0;
-            mem448_en_input <= 1;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        1:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 0;
-            mem448_en_input <= 1;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        2:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 0;
-            mem448_en_input <= 1;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        3:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 0;
-            mem448_en_input <= 1;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        4:
+        last_en_init_status <= 0;
+    end
+end
+
+always @ (posedge clk)
+begin
+    if(rst_n)
+    begin
+        before_last_en_init_status <= last_en_init_status;
+    end
+    else
+    begin
+        before_last_en_init_status <= 0;
+    end
+end
+
+always @ (posedge clk)
+begin
+    if(rst_n)
+    begin
+        if(en_init)
         begin
             ctr_word <= 4'h0;
             mem19198_en_input <= 1;
             mem448_en_input <= 0;
             mem20_en_input <= 0;
-            mem_init_mode <= 0;
+            mem_init_mode <= 1;
             en_pe <= 0;
         end
-        5:
+        else
         begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
+            case(counter_24) //certain signal: ctr_word, mem19198_en_input, mem448_en_input, mem_init_mode
+            0:
+            begin
+                if(last_en_init_status) //first cycle
+                begin
+                    ctr_word <= 4'h0;
+                    mem19198_en_input <= 0;
+                    mem448_en_input <= 1;
+                    mem20_en_input <= 0;
+                    mem_init_mode <= 0;
+                    en_pe <= 0;
+                end
+                else
+                begin //regular cycle
+                    ctr_word <= 4'hf;
+                    mem19198_en_input <= 0;
+                    mem448_en_input <= 1;
+                    mem20_en_input <= 0;
+                    mem_init_mode <= 0;
+                    en_pe <= 1;
+                end
+            end
+            1:
+            begin
+                if(before_last_en_init_status) //first cycle
+                begin
+                    ctr_word <= 4'h0;
+                    mem19198_en_input <= 0;
+                    mem448_en_input <= 1;
+                    mem20_en_input <= 0;
+                    mem_init_mode <= 0;
+                    en_pe <= 0;
+                end
+                else
+                begin //regular cycle
+                    ctr_word <= 4'h0;
+                    mem19198_en_input <= 0;
+                    mem448_en_input <= 1;
+                    mem20_en_input <= 0;
+                    mem_init_mode <= 0;
+                    en_pe <= 1;
+                end
+            end
+            2:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 0;
+                mem448_en_input <= 1;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            3:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 0;
+                mem448_en_input <= 1;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            4:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            5:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            6:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            7:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            8:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            9:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            10:
+            begin
+                ctr_word <= 4'h1;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            11:
+            begin
+                ctr_word <= 4'h2;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            12:
+            begin
+                ctr_word <= 4'h3;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            13:
+            begin
+                ctr_word <= 4'h4;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            14:
+            begin
+                ctr_word <= 4'h5;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            15:
+            begin
+                ctr_word <= 4'h6;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            16:
+            begin
+                ctr_word <= 4'h7;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            17:
+            begin
+                ctr_word <= 4'h8;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            18:
+            begin
+                ctr_word <= 4'h9;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            19:
+            begin
+                ctr_word <= 4'ha;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            20:
+            begin
+                ctr_word <= 4'hb;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            21:
+            begin
+                ctr_word <= 4'hc;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            22:
+            begin
+                ctr_word <= 4'hd;
+                mem19198_en_input <= 1;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            23:
+            begin
+                ctr_word <= 4'he;
+                mem19198_en_input <= 0;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 1;
+            end
+            default:
+            begin
+                ctr_word <= 4'h0;
+                mem19198_en_input <= 0;
+                mem448_en_input <= 0;
+                mem20_en_input <= 0;
+                mem_init_mode <= 0;
+                en_pe <= 0;
+            end
+            endcase
         end
-        6:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        7:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        8:
-        begin
-            ctr_word <= 4'h0;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 0;
-        end
-        9:
-        begin
-            ctr_word <= 4'h1;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        10:
-        begin
-            ctr_word <= 4'h2;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        11:
-        begin
-            ctr_word <= 4'h3;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        12:
-        begin
-            ctr_word <= 4'h4;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        13:
-        begin
-            ctr_word <= 4'h5;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        14:
-        begin
-            ctr_word <= 4'h6;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        15:
-        begin
-            ctr_word <= 4'h7;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        16:
-        begin
-            ctr_word <= 4'h8;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        17:
-        begin
-            ctr_word <= 4'h9;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        18:
-        begin
-            ctr_word <= 4'ha;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        19:
-        begin
-            ctr_word <= 4'hb;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        20:
-        begin
-            ctr_word <= 4'hc;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        21:
-        begin
-            ctr_word <= 4'hd;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        22:
-        begin
-            ctr_word <= 4'he;
-            mem19198_en_input <= 1;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        23:
-        begin
-            ctr_word <= 4'hf;
-            mem19198_en_input <= 0;
-            mem448_en_input <= 0;
-            mem20_en_input <= 0;
-            mem_init_mode <= 0;
-            en_pe <= 1;
-        end
-        endcase
+    end
+    else
+    begin
+        ctr_word <= 4'h0;
+        mem19198_en_input <= 0;
+        mem448_en_input <= 0;
+        mem20_en_input <= 0;
+        mem_init_mode <= 0;
+        en_pe <= 0;
     end
 end
 
