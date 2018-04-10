@@ -1,6 +1,7 @@
 module compare(
 	input clk,
 	input enable,
+	input [3:0] ctrl_wd,
 
 	input reg [11:0] sum0,
 	input reg [11:0] sum1,
@@ -24,7 +25,8 @@ module compare(
 );
 
 reg [11:0] mad;
-reg [7:0] mv;
+reg [3:0] mvx;
+reg [3:0] mvy;
 reg [11:0] sum [0:15];
 
 always @ (*)
@@ -46,6 +48,14 @@ begin
 	sum[14] <= sum14;
 	sum[15] <= sum15;
 end
+	
+always @ (negedge rst_n)
+begin
+	mad <= 12'b0;
+	mvx <= 4'b0;
+	mvy <= 4'b0;
+	sum <= 12'b0;
+end
 
 integer i;
 integer c;
@@ -62,27 +72,46 @@ begin
 				mad <= sum[i];
 				c = i;
 		end
+		
 		case(c)
-		0:	mv <= 8'h00;
-		1:	mv <= 8'h01;
-		2:	mv <= 8'h02;
-		3:	mv <= 8'h03;
-		4:	mv <= 8'h10;
-		5:	mv <= 8'h11;
-		6:	mv <= 8'h12;
-		7:	mv <= 8'h13;
-		8:	mv <= 8'h20;
-		9:	mv <= 8'h21;
-		10:	mv <= 8'h22;
-		11:	mv <= 8'h23;
-		12:	mv <= 8'h30;
-		13:	mv <= 8'h31;
-		14:	mv <= 8'h32;
-		15:	mv <= 8'h33;
+		0:	mvx <= 4'h0;
+		1:	mvx <= 4'h1;
+		2:	mvx <= 4'h2;
+		3:	mvx <= 4'h3;
+		4:	mvx <= 4'h4;
+		5:	mvx <= 4'h5;
+		6:	mvx <= 4'h6;
+		7:	mvx <= 4'h7;
+		8:	mvx <= 4'h8;
+		9:	mvx <= 4'h9;
+		10:	mvx <= 4'ha;
+		11:	mvx <= 4'hb;
+		12:	mvx <= 4'hc;
+		13:	mvx <= 4'hd;
+		14:	mvx <= 4'he;
+		15:	mvx <= 4'hf;
+		
+		case(ctrl_wd)
+		0:	mvy <= 4'h0;
+		1:	mvy <= 4'h1;
+		2:	mvy <= 4'h2;
+		3:	mvy <= 4'h3;
+		4:	mvy <= 4'h4;
+		5:	mvy <= 4'h5;
+		6:	mvy <= 4'h6;
+		7:	mvy <= 4'h7;
+		8:	mvy <= 4'h8;
+		9:	mvy <= 4'h9;
+		10:	mvy <= 4'ha;
+		11:	mvy <= 4'hb;
+		12:	mvy <= 4'hc;
+		13:	mvy <= 4'hd;
+		14:	mvy <= 4'he;
+		15:	mvy <= 4'hf;
 		endcase
 	end
-
-	out <= {mad, mv};
+	
+			out <= {mad, mvx, mvy};
 
 end
 always @ (out)
