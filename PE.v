@@ -44,12 +44,52 @@ reg [7:0] abs_value [0:15];
 reg [8:0] sum1 [0:7];
 reg [9:0] sum2 [0:3];
 reg [10:0] sum3 [0:1];
+	
+//initialize
+always @ (negedge rst_n)
+begin	
+	abs_value[0] <= 8'b0;
+	abs_value[1] <= 8'b0;
+	abs_value[2] <= 8'b0;
+	abs_value[3] <= 8'b0;
+	abs_value[4] <= 8'b0;
+	abs_value[5] <= 8'b0;
+	abs_value[6] <= 8'b0;
+	abs_value[7] <= 8'b0;
+	abs_value[8] <= 8'b0;
+	abs_value[9] <= 8'b0;
+	abs_value[10] <= 8'b0;
+	abs_value[11] <= 8'b0;
+	abs_value[12] <= 8'b0;
+	abs_value[13] <= 8'b0;
+	abs_value[14] <= 8'b0;
+	abs_value[15] <= 8'b0;
+	
+	sum1[0] <= 9'b0;
+	sum1[1] <= 9'b0;
+	sum1[2] <= 9'b0;
+	sum1[3] <= 9'b0;
+	sum1[4] <= 9'b0;
+	sum1[5] <= 9'b0;
+	sum1[6] <= 9'b0;
+	sum1[7] <= 9'b0;
+	
+	sum2[0] <= 10'b0;
+	sum2[1] <= 10'b0;
+	sum2[2] <= 10'b0;
+	sum2[3] <= 10'b0;
+	
+	sum3[0] <= 11'b0;
+	sum3[1] <= 10'b0;
+end
 
+//processing
 always @ (posedge clk)
 begin
 	if(rst_n & enable)
 	begin
-
+		
+		//16 parallel subs
 		if(a00>b00)
 			abs_value[0] <= a00 - b00;
 		else
@@ -118,6 +158,7 @@ begin
 		else
 			abs_value[15] <= b33 - a33;
 
+		//add level 1:	16 -> 8
 		sum1[0] <= abs_value[0] + abs_value[15];
 		sum1[1] <= abs_value[1] + abs_value[14];
 		sum1[2] <= abs_value[2] + abs_value[13];
@@ -127,15 +168,18 @@ begin
 		sum1[6] <= abs_value[6] + abs_value[9];
 		sum1[7] <= abs_value[7] + abs_value[8];
 		sum1[8] <= abs_value[8] + abs_value[7];
-
+		
+		//add level 2:	8 -> 4
 		sum2[0] <= sum1[0] + sum1[7];
 		sum2[1] <= sum1[1] + sum1[6];
 		sum2[2] <= sum1[2] + sum1[5];
 		sum2[3] <= sum1[3] + sum1[4];
 
+		//add level 3:	4 -> 2
 		sum3[0] <= sum2[0] + sum2[3];
 		sum3[1] <= sum2[1] + sum2[2];
 
+		//add level 4:	2 -> 1
 		sum <= sum3[0] + sum3[1];
 	end
 end
