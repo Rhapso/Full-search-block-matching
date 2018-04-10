@@ -624,6 +624,7 @@ calculate cal_1(
     .clk(clk),
     .enable(en_pe),
     .rst_n(rst_n),
+    .ctr_word(ctr_word),
     .a00_pe00(pe_in00),
     .a01_pe00(pe_in01),
     .a02_pe00(pe_in02),

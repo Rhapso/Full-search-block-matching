@@ -1,6 +1,26 @@
+/**************************************************************** 
+  ** Title : process unit
+  ** Project :  full-search block matching algorithm on VLSI
+***************************************************************** 
+  ** File :  PE.v
+  ** Author : yangbo fzp
+  ** Organization: sjtu
+  ** Created :  
+  ** Last update : 
+  ** Platform : 
+  ** Simulators : 
+  ** Synthesizers: 
+  ** Targets : 
+  ** Dependency :  
+***************************************************************** 
+  ** Description:  
+***************************************************************** 
+  ** Copyright (c) notice  
+*****************************************************************/ 
 module PE(
 	input clk,
-	input enable,
+	input rst_n,
+    input enable,
 
 	input [7:0] a00,
 	input [7:0] a01,
@@ -36,152 +56,79 @@ module PE(
 	input [7:0] b32,
 	input [7:0] b33,
 
-	input rst_n,
 	output reg [11:0] sum
 );
 
-reg [7:0] abs_value [0:15];
-reg [8:0] sum1 [0:7];
-reg [9:0] sum2 [0:3];
-reg [10:0] sum3 [0:1];
-	
-//initialize
-always @ (negedge rst_n)
-begin	
-	abs_value[0] <= 8'b0;
-	abs_value[1] <= 8'b0;
-	abs_value[2] <= 8'b0;
-	abs_value[3] <= 8'b0;
-	abs_value[4] <= 8'b0;
-	abs_value[5] <= 8'b0;
-	abs_value[6] <= 8'b0;
-	abs_value[7] <= 8'b0;
-	abs_value[8] <= 8'b0;
-	abs_value[9] <= 8'b0;
-	abs_value[10] <= 8'b0;
-	abs_value[11] <= 8'b0;
-	abs_value[12] <= 8'b0;
-	abs_value[13] <= 8'b0;
-	abs_value[14] <= 8'b0;
-	abs_value[15] <= 8'b0;
-	
-	sum1[0] <= 9'b0;
-	sum1[1] <= 9'b0;
-	sum1[2] <= 9'b0;
-	sum1[3] <= 9'b0;
-	sum1[4] <= 9'b0;
-	sum1[5] <= 9'b0;
-	sum1[6] <= 9'b0;
-	sum1[7] <= 9'b0;
-	
-	sum2[0] <= 10'b0;
-	sum2[1] <= 10'b0;
-	sum2[2] <= 10'b0;
-	sum2[3] <= 10'b0;
-	
-	sum3[0] <= 11'b0;
-	sum3[1] <= 10'b0;
-end
+wire [7:0] abs00;
+wire [7:0] abs01;
+wire [7:0] abs02;
+wire [7:0] abs03;
+wire [7:0] abs04;
+wire [7:0] abs05;
+wire [7:0] abs06;
+wire [7:0] abs07;
+wire [7:0] abs08;
+wire [7:0] abs09;
+wire [7:0] abs10;
+wire [7:0] abs11;
+wire [7:0] abs12;
+wire [7:0] abs13;
+wire [7:0] abs14;
+wire [7:0] abs15;
 
-//processing
+wire [8:0] sum00_01;
+wire [8:0] sum02_03;
+wire [8:0] sum04_05;
+wire [8:0] sum06_07;
+wire [8:0] sum08_09;
+wire [8:0] sum10_11;
+wire [8:0] sum12_13;
+wire [8:0] sum14_15;
+wire [9:0] sum00_01_02_03;
+wire [9:0] sum04_05_06_07;
+wire [9:0] sum08_09_10_11;
+wire [9:0] sum12_13_14_15;
+wire [10:0] sum00_01_02_03_04_05_06_07;
+wire [10:0] sum08_09_10_11_12_13_14_15;
+wire [11:0] sum_x;
+
+assign abs00 = (a00 <b00) ? b00 - a00 : a00 - b00;
+assign abs01 = (a01 <b01) ? b01 - a01 : a01 - b01;
+assign abs02 = (a02 <b02) ? b02 - a02 : a02 - b02;
+assign abs03 = (a03 <b03) ? b03 - a03 : a03 - b03;
+assign abs04 = (a10 <b10) ? b10 - a10 : a10 - b10;
+assign abs05 = (a11 <b11) ? b11 - a11 : a11 - b11;
+assign abs06 = (a12 <b12) ? b12 - a12 : a12 - b12;
+assign abs07 = (a13 <b13) ? b13 - a13 : a13 - b13;
+assign abs08 = (a20 <b20) ? b20 - a20 : a20 - b20;
+assign abs09 = (a21 <b21) ? b21 - a21 : a21 - b21;
+assign abs10 = (a22 <b22) ? b22 - a22 : a22 - b22;
+assign abs11 = (a23 <b23) ? b23 - a23 : a23 - b23;
+assign abs12 = (a30 <b30) ? b30 - a30 : a30 - b30;
+assign abs13 = (a31 <b31) ? b31 - a31 : a31 - b31;
+assign abs14 = (a32 <b32) ? b32 - a32 : a32 - b32;
+assign abs15 = (a33 <b33) ? b33 - a33 : a33 - b33;
+
+assign sum00_01 = abs00 + abs01;
+assign sum02_03 = abs02 + abs03;
+assign sum04_05 = abs04 + abs05;
+assign sum06_07 = abs06 + abs07;
+assign sum08_09 = abs08 + abs09;
+assign sum10_11 = abs10 + abs11;
+assign sum12_13 = abs12 + abs13;
+assign sum14_15 = abs14 + abs15;
+assign sum00_01_02_03 = sum00_01 + sum02_03;
+assign sum04_05_06_07 = sum04_05 + sum06_07;
+assign sum08_09_10_11 = sum08_09 + sum10_11;
+assign sum12_13_14_15 = sum12_13 + sum14_15;
+assign sum00_01_02_03_04_05_06_07 = sum00_01_02_03 + sum04_05_06_07;
+assign sum08_09_10_11_12_13_14_15 = sum08_09_10_11 + sum12_13_14_15;
+assign sum_x = sum00_01_02_03_04_05_06_07 + sum08_09_10_11_12_13_14_15;
+
 always @ (posedge clk)
 begin
-	if(rst_n & enable)
-	begin
-		
-		//16 parallel subs
-		if(a00>b00)
-			abs_value[0] <= a00 - b00;
-		else
-			abs_value[0] <= b00 - a00;
-		if(a01>b01)
-			abs_value[1] <= a01 - b01;
-		else
-			abs_value[1] <= b01 - a01;
-		if(a02>b02)
-			abs_value[2] <= a02 - b02;
-		else
-			abs_value[2] <= b02 - a02;
-		if(a03>b03)
-			abs_value[3] <= a03 - b03;
-		else
-			abs_value[3] <= b03 - a03;
-		
-		if(a10>b10)
-			abs_value[4] <= a10 - b10;
-		else
-			abs_value[4] <= b10 - a10;
-		if(a11>b11)
-			abs_value[5] <= a11 - b11;
-		else
-			abs_value[5] <= b11 - a11;
-		if(a12>b12)
-			abs_value[6] <= a12 - b12;
-		else
-			abs_value[6] <= b12 - a12;
-		if(a13>b13)
-			abs_value[7] <= a13 - b13;
-		else
-			abs_value[7] <= b13 - a13;
-
-		if(a20>b20)
-			abs_value[8] <= a20 - b20;
-		else
-			abs_value[8] <= b20 - a20;
-		if(a21>b21)
-			abs_value[9] <= a21 - b21;
-		else
-			abs_value[9] <= b21 - a21;
-		if(a22>b22)
-			abs_value[10] <= a22 - b22;
-		else
-			abs_value[10] <= b22 - a22;
-		if(a23>b23)
-			abs_value[11] <= a23 - b23;
-		else
-			abs_value[11] <= b23 - a23;
-
-		if(a30>b30)
-			abs_value[12] <= a30 - b30;
-		else
-			abs_value[12] <= b30 - a30;
-		if(a31>b31)
-			abs_value[13] <= a31 - b31;
-		else
-			abs_value[13] <= b31 - a31;
-		if(a32>b32)
-			abs_value[14] <= a32 - b32;
-		else
-			abs_value[14] <= b32 - a32;
-		if(a33>b33)
-			abs_value[15] <= a33 - b33;
-		else
-			abs_value[15] <= b33 - a33;
-
-		//add level 1:	16 -> 8
-		sum1[0] <= abs_value[0] + abs_value[15];
-		sum1[1] <= abs_value[1] + abs_value[14];
-		sum1[2] <= abs_value[2] + abs_value[13];
-		sum1[3] <= abs_value[3] + abs_value[12];
-		sum1[4] <= abs_value[4] + abs_value[11];
-		sum1[5] <= abs_value[5] + abs_value[10];
-		sum1[6] <= abs_value[6] + abs_value[9];
-		sum1[7] <= abs_value[7] + abs_value[8];
-		sum1[8] <= abs_value[8] + abs_value[7];
-		
-		//add level 2:	8 -> 4
-		sum2[0] <= sum1[0] + sum1[7];
-		sum2[1] <= sum1[1] + sum1[6];
-		sum2[2] <= sum1[2] + sum1[5];
-		sum2[3] <= sum1[3] + sum1[4];
-
-		//add level 3:	4 -> 2
-		sum3[0] <= sum2[0] + sum2[3];
-		sum3[1] <= sum2[1] + sum2[2];
-
-		//add level 4:	2 -> 1
-		sum <= sum3[0] + sum3[1];
-	end
+    if(rst_n && enable) sum <= sum_x;
+    else sum <= 0;
 end
 
 endmodule

@@ -1,138 +1,123 @@
+/**************************************************************** 
+  ** Title : compare module
+  ** Project :  full-search block matching algorithm on VLSI
+***************************************************************** 
+  ** File :  compare.v
+  ** Author : yangbo fzp
+  ** Organization: sjtu
+  ** Created :  
+  ** Last update : 
+  ** Platform : 
+  ** Simulators : 
+  ** Synthesizers: 
+  ** Targets : 
+  ** Dependency :  
+***************************************************************** 
+  ** Description:  
+***************************************************************** 
+  ** Copyright (c) notice  
+*****************************************************************/ 
+
 module compare(
-	input clk,
-	input enable,
-	input [3:0] ctrl_wd,
+    input 				clk,
+    input 				rst_n,
+    input               enable,
+    input [3:0] 		ctr_word,
 
-	input reg [11:0] sum0,
-	input reg [11:0] sum1,
-	input reg [11:0] sum2,
-	input reg [11:0] sum3,
-	input reg [11:0] sum4,
-	input reg [11:0] sum5,
-	input reg [11:0] sum6,
-	input reg [11:0] sum7,
-	input reg [11:0] sum8,
-	input reg [11:0] sum9,
-	input reg [11:0] sum10,
-	input reg [11:0] sum11,
-	input reg [11:0] sum12,
-	input reg [11:0] sum13,
-	input reg [11:0] sum14,
-	input reg [11:0] sum15,
+    input [11:0] 		sum00,
+    input [11:0] 		sum01,
+    input [11:0] 		sum02,
+    input [11:0] 		sum03,
+    input [11:0] 		sum04,
+    input [11:0] 		sum05,
+    input [11:0] 		sum06,
+    input [11:0] 		sum07,
+    input [11:0] 		sum08,
+    input [11:0] 		sum09,
+    input [11:0] 		sum10,
+    input [11:0] 		sum11,
+    input [11:0] 		sum12,
+    input [11:0] 		sum13,
+    input [11:0] 		sum14,
+    input [11:0] 		sum15,
 
-	input rst_n,
-	output reg [19:0] out
+    output reg [19:0] 	out
 );
 
-reg [11:0] mad;
-reg [3:0] mvx;
-reg [3:0] mvy;
-reg [11:0] sum [0:15];
+wire [11:0] com00_01;
+wire [11:0] com02_03;
+wire [11:0] com04_05;
+wire [11:0] com06_07;
+wire [11:0] com08_09;
+wire [11:0] com10_11;
+wire [11:0] com12_13;
+wire [11:0] com14_15;
+wire [11:0] com00_01_02_03;
+wire [11:0] com04_05_06_07;
+wire [11:0] com08_09_10_11;
+wire [11:0] com12_13_14_15;
+wire [11:0] com00_01_02_03_04_05_06_07;
+wire [11:0] com08_09_10_11_12_13_14_15;
+wire [11:0] com_x;
 
-//initialize
-always @ (negedge rst_n)
-begin
-	mad <= 12'b0;
-	mvx <= 4'b0;
-	mvy <= 4'b0;
-	sum[0] <= 12'b0;
-	sum[1] <= 12'b0;
-	sum[2] <= 12'b0;
-	sum[3] <= 12'b0;
-	sum[4] <= 12'b0;
-	sum[5] <= 12'b0;
-	sum[6] <= 12'b0;
-	sum[7] <= 12'b0;
-	sum[8] <= 12'b0;
-	sum[9] <= 12'b0;
-	sum[10] <= 12'b0;
-	sum[11] <= 12'b0;
-	sum[12] <= 12'b0;
-	sum[13] <= 12'b0;
-	sum[14] <= 12'b0;
-	sum[15] <= 12'b0;
-end
-	
-always @ (*)
-begin
-	sum[0] <= sum0;
-	sum[1] <= sum1;
-	sum[2] <= sum2;
-	sum[3] <= sum3;
-	sum[4] <= sum4;
-	sum[5] <= sum5;
-	sum[6] <= sum6;
-	sum[7] <= sum7;
-	sum[8] <= sum8;
-	sum[9] <= sum9;
-	sum[10] <= sum10;
-	sum[11] <= sum11;
-	sum[12] <= sum12;
-	sum[13] <= sum13;
-	sum[14] <= sum14;
-	sum[15] <= sum15;
-end
-	
-integer i;
-integer c;
+wire [3:0] location00_01;
+wire [3:0] location02_03;
+wire [3:0] location04_05;
+wire [3:0] location06_07;
+wire [3:0] location08_09;
+wire [3:0] location10_11;
+wire [3:0] location12_13;
+wire [3:0] location14_15;
+wire [3:0] location00_01_02_03;
+wire [3:0] location04_05_06_07;
+wire [3:0] location08_09_10_11;
+wire [3:0] location12_13_14_15;
+wire [3:0] location00_01_02_03_04_05_06_07;
+wire [3:0] location08_09_10_11_12_13_14_15;
+wire [3:0] location_x;
+
+assign com00_01 = (sum00 < sum01) ? sum00 : sum01;
+assign com02_03 = (sum02 < sum03) ? sum02 : sum03;
+assign com04_05 = (sum04 < sum05) ? sum04 : sum05;
+assign com06_07 = (sum06 < sum07) ? sum06 : sum07;
+assign com08_09 = (sum08 < sum09) ? sum08 : sum09;
+assign com10_11 = (sum10 < sum11) ? sum10 : sum11;
+assign com12_13 = (sum12 < sum13) ? sum12 : sum13;
+assign com14_15 = (sum14 < sum15) ? sum14 : sum15;
+assign com00_01_02_03 = (com00_01 < com02_03) ? com00_01 : com02_03;
+assign com04_05_06_07 = (com04_05 < com06_07) ? com04_05 : com06_07;
+assign com08_09_10_11 = (com08_09 < com10_11) ? com08_09 : com10_11;
+assign com12_13_14_15 = (com12_13 < com14_15) ? com12_13 : com14_15;
+assign com00_01_02_03_04_05_06_07 = (com00_01_02_03 < com04_05_06_07) ? com00_01_02_03 : com04_05_06_07;
+assign com08_09_10_11_12_13_14_15 = (com08_09_10_11 < com12_13_14_15) ? com08_09_10_11 : com12_13_14_15;
+assign com_x = (com00_01_02_03_04_05_06_07 < com08_09_10_11_12_13_14_15) ? com00_01_02_03_04_05_06_07 : com08_09_10_11_12_13_14_15;
+
+assign location00_01 = (sum00 < sum01) ? 4'b0000 : 4'b0001;
+assign location02_03 = (sum02 < sum03) ? 4'b0010 : 4'b0011;
+assign location04_05 = (sum04 < sum05) ? 4'b0100 : 4'b0101;
+assign location06_07 = (sum06 < sum07) ? 4'b0110 : 4'b0111;
+assign location08_09 = (sum08 < sum09) ? 4'b1000 : 4'b1001;
+assign location10_11 = (sum10 < sum11) ? 4'b1010 : 4'b1011;
+assign location12_13 = (sum12 < sum13) ? 4'b1100 : 4'b1101;
+assign location14_15 = (sum14 < sum15) ? 4'b1110 : 4'b1111;
+assign location00_01_02_03 = (com00_01 < com02_03) ? location00_01 : location02_03;
+assign location04_05_06_07 = (com04_05 < com06_07) ? location04_05 : location06_07;
+assign location08_09_10_11 = (com08_09 < com10_11) ? location08_09 : location10_11;
+assign location12_13_14_15 = (com12_13 < com14_15) ? location12_13 : location14_15;
+assign location00_01_02_03_04_05_06_07 = (com00_01_02_03 < com04_05_06_07) ? location00_01_02_03 : location04_05_06_07;
+assign location08_09_10_11_12_13_14_15 = (com08_09_10_11 < com12_13_14_15) ? location08_09_10_11 : location12_13_14_15;
+assign location_x = (com00_01_02_03_04_05_06_07 < com08_09_10_11_12_13_14_15) ? location00_01_02_03_04_05_06_07 : location08_09_10_11_12_13_14_15;
 
 always @ (posedge clk)
 begin
-	mad <= sum[0];
-	c = 0;
-	if(rst_n & enable)
-	begin
-		for(i=1;i<16;i=i+1)
-		begin
-			if(mad > sum[i])
-				mad <= sum[i];
-				c = i;
-		end
-		
-		case(c)
-		0:	mvx <= 4'h0;
-		1:	mvx <= 4'h1;
-		2:	mvx <= 4'h2;
-		3:	mvx <= 4'h3;
-		4:	mvx <= 4'h4;
-		5:	mvx <= 4'h5;
-		6:	mvx <= 4'h6;
-		7:	mvx <= 4'h7;
-		8:	mvx <= 4'h8;
-		9:	mvx <= 4'h9;
-		10:	mvx <= 4'ha;
-		11:	mvx <= 4'hb;
-		12:	mvx <= 4'hc;
-		13:	mvx <= 4'hd;
-		14:	mvx <= 4'he;
-		15:	mvx <= 4'hf;
-		
-		case(ctrl_wd)
-		0:	mvy <= 4'h0;
-		1:	mvy <= 4'h1;
-		2:	mvy <= 4'h2;
-		3:	mvy <= 4'h3;
-		4:	mvy <= 4'h4;
-		5:	mvy <= 4'h5;
-		6:	mvy <= 4'h6;
-		7:	mvy <= 4'h7;
-		8:	mvy <= 4'h8;
-		9:	mvy <= 4'h9;
-		10:	mvy <= 4'ha;
-		11:	mvy <= 4'hb;
-		12:	mvy <= 4'hc;
-		13:	mvy <= 4'hd;
-		14:	mvy <= 4'he;
-		15:	mvy <= 4'hf;
-		endcase
-	end
-	
-			out <= {mad, mvx, mvy};
-
-end
-always @ (out)
-begin
-	$display("mad = %d, mv = %d.\n", out[19:8],out[7:0]);
+    if(rst_n && enable)
+    begin
+        out <= {com_x, location_x, ctr_word}; //pattern: SAD 12bit, x 4bit, y 4bit.
+    end
+    else
+    begin
+        out <= 20'b0;
+    end
 end
 
 endmodule
