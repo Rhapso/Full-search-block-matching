@@ -35,6 +35,7 @@ module ctr
     output reg                              en_pe
 );
 reg [4:0]                   counter_24;
+reg [2:0]                   init_counter_6;
 reg                         last_en_init_status;
 reg                         before_last_en_init_status;
 
@@ -48,7 +49,14 @@ always @ (posedge clk)
 begin
     if(rst_n && !en_init && counter_24 != 5'b10111) counter_24 <= counter_24 + 5'b00001;
     else counter_24 <= 5'b0;
-end 
+end
+
+always @ (posedge clk)
+begin
+    if(rst_n && en_init && init_counter_6 != 3'b110) init_counter_6 <= init_counter_6 + 3'b001;
+    else if(rst_n && en_init && init_counter_6 == 3'b110) init_counter_6 <= init_counter_6;
+    else init_counter_6 <= 3'b0;
+end
 
 always @ (posedge clk)
 begin
@@ -80,12 +88,35 @@ begin
     begin
         if(en_init)
         begin
-            ctr_word <= 4'h0;
             mem19198_en_input <= 1;
             mem448_en_input <= 0;
-            mem20_en_input <= 0;
             mem_init_mode <= 1;
-            en_pe <= 0;
+            case (init_counter_6)
+            0:
+            begin
+                ctr_word <= 4'hf;
+                en_pe <= 1;
+                mem20_en_input <= 0;
+            end
+            1:
+            begin
+                ctr_word <= 4'h0;
+                en_pe <= 1;
+                mem20_en_input <= 0;
+            end
+            5: // adjustable
+            begin
+                ctr_word <= 4'h0;
+                en_pe <= 0;
+                mem20_en_input <= 01;
+            end
+            default:
+            begin
+                ctr_word <= 4'h0;
+                en_pe <= 0;
+                mem20_en_input <= 0;
+            end
+            endcase
         end
         else
         begin
