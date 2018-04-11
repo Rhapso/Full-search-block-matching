@@ -751,7 +751,7 @@ begin
         6'b101011: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*13],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*9-1:0], input_extra_buffer};
         6'b101100: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*9],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*5-1:0], input_extra_buffer};
         6'b101101: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*5],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*1-1:0], input_extra_buffer};
-        6'b101110: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*1],         input_raw[WORD_WIDETH*4-1:0],       input_extra_buffer[WORD_WIDETH*1-1:0]}; //push to reg
+        6'b101110: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*1],         input_raw[WORD_WIDETH*4-1:0]}; //push to reg
         6'b101111: {input_buffer, input_extra_buffer} <= {input_extra_buffer[WORD_WIDETH*3-1:0],                input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*12-1:0], input_extra_buffer};
         6'b110000: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*12],        input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*8-1:0], input_extra_buffer};
         6'b110001: {input_buffer, input_extra_buffer} <= {input_buffer[WORD_WIDETH*19-1:WORD_WIDETH*8],         input_raw[WORD_WIDETH*4-1:0],       input_buffer[WORD_WIDETH*4-1:0], input_extra_buffer};
