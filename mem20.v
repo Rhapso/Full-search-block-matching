@@ -19,10 +19,9 @@
 *****************************************************************/ 
 module mem20(
     input                       clk,
-    input       [7:0]           coordinate,
-    input       [11:0]          mad,
     input                       en_input,
     input                       rst_n,
+    input       [19:0]          data_raw,
     output reg                  s_out_port
 );
 
@@ -32,7 +31,7 @@ always @ (posedge clk)
 begin
     if(rst_n)
     begin
-        if(en_input) buffer20 <= {coordinate, mad};
+        if(en_input) buffer20 <= data_raw;
         else buffer20 <= buffer20 << 1;
     end
     else

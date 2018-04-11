@@ -98,7 +98,7 @@ begin
                     mem19198_en_input <= 0;
                     mem448_en_input <= 1;
                     mem20_en_input <= 0;
-                    mem_init_mode <= 0;
+                    mem_init_mode <= 1;
                     en_pe <= 0;
                 end
                 else
@@ -164,7 +164,7 @@ begin
                 ctr_word <= 4'h0;
                 mem19198_en_input <= 1;
                 mem448_en_input <= 0;
-                mem20_en_input <= 0;
+                mem20_en_input <= 1;
                 mem_init_mode <= 0;
                 en_pe <= 0;
             end

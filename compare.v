@@ -116,7 +116,7 @@ begin
     end
     else
     begin
-        out <= 20'b0;
+        out <= 20'b11111111111100000000;
     end
 end
 

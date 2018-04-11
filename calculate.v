@@ -591,6 +591,8 @@ wire [19:0] compare_out;
 reg enable0;
 reg enable1;
 reg enable2;
+reg [3:0] ctr_word_delay0;
+reg [3:0] ctr_word_delay1;
 
 always @ (posedge clk)
 begin
@@ -608,6 +610,18 @@ always @ (posedge clk)
 begin
 	if(rst_n) enable2 <= enable1;
 	else enable2 <= 0;
+end
+
+always @ (posedge clk)
+begin
+	if(rst_n) ctr_word_delay0 <= ctr_word;
+	else ctr_word_delay0 <= 0;
+end
+
+always @ (posedge clk)
+begin
+	if(rst_n) ctr_word_delay1 <= ctr_word_delay0;
+	else ctr_word_delay1 <= 0;
 end
 
 PE PE00(.clk(clk), .rst_n(rst_n), .enable(enable), .sum(sum_pe00),
@@ -770,7 +784,7 @@ PE PE15(.clk(clk), .rst_n(rst_n), .enable(enable), .sum(sum_pe15),
 		.b20(b20_pe15), .b21(b21_pe15), .b22(b22_pe15), .b23(b23_pe15),
 		.b30(b30_pe15), .b31(b31_pe15), .b32(b32_pe15), .b33(b33_pe15));
 
-compare compare(.clk(clk), .rst_n(rst_n), .enable(enable0), .ctr_word(ctr_word), .out(compare_out),
+compare compare(.clk(clk), .rst_n(rst_n), .enable(enable0), .ctr_word(ctr_word_delay1), .out(compare_out),
 				.sum00(sum_pe00), .sum01(sum_pe01), .sum02(sum_pe02), .sum03(sum_pe03),
 				.sum04(sum_pe04), .sum05(sum_pe05), .sum06(sum_pe06), .sum07(sum_pe07),
 				.sum08(sum_pe08), .sum09(sum_pe09), .sum10(sum_pe10), .sum11(sum_pe11),

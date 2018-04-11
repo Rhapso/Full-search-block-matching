@@ -312,11 +312,6 @@ wire  [WORD_WIDETH-1:0]           pe15_in14;
 wire  [WORD_WIDETH-1:0]           pe15_in15;
 
 wire        [19:0]                  cal_out;
-wire        [7:0]                   coordinate; //un
-wire        [11:0]                  mad; //un
-
-assign coordinate = cal_out[7:0];
-assign mad = cal_out[19:8]; 
 
 ctr #(.WORD_WIDETH(WORD_WIDETH)) ctr_1(
     .clk(clk),
@@ -1142,10 +1137,9 @@ calculate cal_1(
 
 mem20 mem20_1(
     .clk(clk),
-    .coordinate(coordinate), //uncertain
-    .mad(mad), //uncertain
     .en_input(mem20_en_input),
     .rst_n(rst_n),
+    .data_raw(cal_out),
     .s_out_port(serial20)
 );
 
