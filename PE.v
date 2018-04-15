@@ -59,6 +59,10 @@ module PE(
 	output reg [11:0] sum
 );
 
+reg 		enable_delay;
+reg [19:0] 	sum_reg_00_01_02_03_04_05_06_07;
+reg [19:0] 	sum_reg_08_09_10_11_12_13_14_15;
+
 wire [7:0] abs00;
 wire [7:0] abs01;
 wire [7:0] abs02;
@@ -121,14 +125,42 @@ assign sum00_01_02_03 = sum00_01 + sum02_03;
 assign sum04_05_06_07 = sum04_05 + sum06_07;
 assign sum08_09_10_11 = sum08_09 + sum10_11;
 assign sum12_13_14_15 = sum12_13 + sum14_15;
-assign sum00_01_02_03_04_05_06_07 = sum00_01_02_03 + sum04_05_06_07;
-assign sum08_09_10_11_12_13_14_15 = sum08_09_10_11 + sum12_13_14_15;
+assign sum00_01_02_03_04_05_06_07 = sum_reg_00_01_02_03_04_05_06_07[19:10] + sum_reg_00_01_02_03_04_05_06_07[9:0];
+assign sum08_09_10_11_12_13_14_15 = sum_reg_08_09_10_11_12_13_14_15[19:10] + sum_reg_08_09_10_11_12_13_14_15[9:0];
 assign sum_x = sum00_01_02_03_04_05_06_07 + sum08_09_10_11_12_13_14_15;
 
 always @ (posedge clk)
 begin
-    if(rst_n && enable) sum <= sum_x;
-    else sum <= 0;
+    if(rst_n) enable_delay <= enable;
+    else enable_delay <= 0;
+end
+
+always @ (posedge clk)
+begin
+    if(rst_n) 
+	begin
+		if(enable)
+		begin
+			sum_reg_00_01_02_03_04_05_06_07 <= {sum00_01_02_03, sum04_05_06_07};
+			sum_reg_08_09_10_11_12_13_14_15 <= {sum08_09_10_11, sum12_13_14_15};
+		else
+		else
+		begin
+			sum_reg_00_01_02_03_04_05_06_07 <= sum_reg_00_01_02_03_04_05_06_07;
+			sum_reg_08_09_10_11_12_13_14_15 <= sum_reg_08_09_10_11_12_13_14_15;
+		end
+	end
+    else
+	begin
+		sum_reg_00_01_02_03_04_05_06_07 <= 20'b0;
+		sum_reg_08_09_10_11_12_13_14_15 <= 20'b0;
+	end
+end
+
+always @ (posedge clk)
+begin
+    if(rst_n && enable_delay) sum <= sum_x;
+    else sum <= 12'b0;
 end
 
 endmodule
