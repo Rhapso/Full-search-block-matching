@@ -1,0 +1,8 @@
+#@ # 
+#@ # Running icc_shell Version D-2010.03-ICC-SP5-2 for amd64 -- Feb 01, 2011
+#@ # Date:   %sSun Apr 15 17:38:44 2018
+#@ # Run by: student@Student
+#@ 
+
+gui_start
+exit
