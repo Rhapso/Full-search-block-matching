@@ -697,17 +697,18 @@ reg [WORD_WIDETH*3-1:0]     input_extra_buffer; //[23:0]
 reg [4:0]                   input_counter;
 reg [4:0]                   target_line;
 reg                         buffer_ready;
-
+reg                         first_init_mode;
+// first_init_mode logic to judge if entering initial mode
 always @ (posedge clk)
 begin
-    if(rst_n)
-    begin
-        buffer_ready <= (input_counter == 5'b00100 || input_counter == 5'b01001 || input_counter == 5'b01110 || input_counter == 5'b10010);
-    end
-    else
-    begin
-        buffer_ready <= 0;
-    end
+    if(rst_n) first_init_mode <= init_mode;
+    else first_init_mode <= 0;
+end
+// buffer_ready logic
+always @ (posedge clk)
+begin
+    if(rst_n) buffer_ready <= (input_counter == 5'b00100 || input_counter == 5'b01001 || input_counter == 5'b01110 || input_counter == 5'b10010);
+    else buffer_ready <= 0;
 end
 
 // input_counter logic
@@ -717,19 +718,13 @@ begin
     else input_counter <= 5'b0;
 end
 
-// target line logic is crtical while changing initial mode to full speed mode
+// target line logic is crtical while changing initial mode to full speed mode and changing back!!
 always @ (posedge clk)
-begin
-    if(rst_n)
-    begin
-        if(init_mode && buffer_ready) target_line <= target_line == 5'b10010 ? 5'b00000 : target_line + 5'b00001;
-        else if(!init_mode && buffer_ready) target_line <= target_line == 5'b10010 ? 5'b01111 : target_line + 5'b00001;
-        else target_line <= target_line;
-    end
-    else
-    begin
-        target_line <= 5'b0;
-    end
+begin    
+    if(rst_n && buffer_ready) target_line <= target_line + 5'b00001;
+    else if(rst_n && !init_mode && target_line == 5'b10011) target_line <= 5'b01111;
+    else if(!rst_n || (init_mode && !first_init_mode)) target_line <= 5'b0;
+    else target_line <= target_line;
 end
 //input buffer logic
 always @ (posedge clk)

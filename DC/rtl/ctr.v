@@ -104,7 +104,7 @@ begin
                 en_pe <= 1;
                 mem20_en_input <= 0;
             end
-            7: // adjustable
+            6: // adjustable
             begin
                 ctr_word <= 4'h0;
                 en_pe <= 0;
@@ -195,7 +195,7 @@ begin
                 ctr_word <= 4'h0;
                 mem19198_en_input <= 1;
                 mem448_en_input <= 0;
-                mem20_en_input <= 1;
+                mem20_en_input <= 0;
                 mem_init_mode <= 0;
                 en_pe <= 0;
             end
@@ -204,7 +204,7 @@ begin
                 ctr_word <= 4'h0;
                 mem19198_en_input <= 1;
                 mem448_en_input <= 0;
-                mem20_en_input <= 0;
+                mem20_en_input <= 1; // pipline added in calculate.v
                 mem_init_mode <= 0;
                 en_pe <= 0;
             end

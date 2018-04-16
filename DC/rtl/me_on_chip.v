@@ -26,7 +26,7 @@
 //1 output
 
 
-module me_on_chip#(WORD_WIDETH = 8)(clk, init, input_raw, rst_n, serial20);
+module me_on_chip#(parameter WORD_WIDETH = 8)(clk, init, input_raw, rst_n, serial20);
 
     
 input                       clk;

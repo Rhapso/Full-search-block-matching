@@ -45,12 +45,28 @@ module mem448
 );
 
 reg [1:0]               input_counter;
+reg                     en_input_delay;
+reg [WORD_WIDETH*4-1:0]   input_raw_delay;
+
+always @ (posedge clk) // dalay for one cycle to prevent too early change the output
+begin
+    if(rst_n) 
+    begin
+        en_input_delay <= en_input;
+        input_raw_delay <= input_raw;
+    end
+    else
+    begin
+        en_input_delay <= 0;
+        input_raw_delay <= 32'b0;
+    end
+end
 
 always @ (posedge clk)
 begin
     if(rst_n)
     begin
-        input_counter <= en_input ? input_counter + 2'b01 : input_counter;
+        input_counter <= en_input_delay ? input_counter + 2'b01 : input_counter;
     end
     else
     begin
@@ -62,7 +78,7 @@ always @ (posedge clk)
 begin
     if(rst_n)
     begin
-        if(en_input && input_counter == 2'b00) {pe_in00, pe_in01, pe_in02, pe_in03} <= input_raw;
+        if(en_input_delay && input_counter == 2'b00) {pe_in00, pe_in01, pe_in02, pe_in03} <= input_raw_delay;
         else {pe_in00, pe_in01, pe_in02, pe_in03} <= {pe_in00, pe_in01, pe_in02, pe_in03};
     end
     else
@@ -75,7 +91,7 @@ always @ (posedge clk)
 begin
     if(rst_n)
     begin
-        if(en_input && input_counter == 2'b01) {pe_in04, pe_in05, pe_in06, pe_in07} <= input_raw;
+        if(en_input_delay && input_counter == 2'b01) {pe_in04, pe_in05, pe_in06, pe_in07} <= input_raw_delay;
         else {pe_in04, pe_in05, pe_in06, pe_in07} <= {pe_in04, pe_in05, pe_in06, pe_in07};
     end
     else
@@ -88,7 +104,7 @@ always @ (posedge clk)
 begin
     if(rst_n)
     begin
-        if(en_input && input_counter == 2'b10) {pe_in08, pe_in09, pe_in10, pe_in11} <= input_raw;
+        if(en_input_delay && input_counter == 2'b10) {pe_in08, pe_in09, pe_in10, pe_in11} <= input_raw_delay;
         else {pe_in08, pe_in09, pe_in10, pe_in11} <= {pe_in08, pe_in09, pe_in10, pe_in11};
     end
     else
@@ -101,7 +117,7 @@ always @ (posedge clk)
 begin
     if(rst_n)
     begin
-        if(en_input && input_counter == 2'b11) {pe_in12, pe_in13, pe_in14, pe_in15} <= input_raw;
+        if(en_input_delay && input_counter == 2'b11) {pe_in12, pe_in13, pe_in14, pe_in15} <= input_raw_delay;
         else {pe_in12, pe_in13, pe_in14, pe_in15} <= {pe_in12, pe_in13, pe_in14, pe_in15};
     end
     else
