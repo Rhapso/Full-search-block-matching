@@ -35,7 +35,7 @@ module ctr
     output reg                              en_pe
 );
 reg [4:0]                   counter_24;
-reg [2:0]                   init_counter_6;
+reg [3:0]                   init_counter_8;
 reg                         last_en_init_status;
 reg                         before_last_en_init_status;
 
@@ -53,9 +53,9 @@ end
 
 always @ (posedge clk)
 begin
-    if(rst_n && en_init && init_counter_6 != 3'b110) init_counter_6 <= init_counter_6 + 3'b001;
-    else if(rst_n && en_init && init_counter_6 == 3'b110) init_counter_6 <= init_counter_6;
-    else init_counter_6 <= 3'b0;
+    if(rst_n && en_init && init_counter_8 != 4'b1000) init_counter_8 <= init_counter_8 + 4'b0001;
+    else if(rst_n && en_init && init_counter_8 == 4'b1000) init_counter_8 <= init_counter_8;
+    else init_counter_8 <= 4'b0;
 end
 
 always @ (posedge clk)
@@ -91,7 +91,7 @@ begin
             mem19198_en_input <= 1;
             mem448_en_input <= 0;
             mem_init_mode <= 1;
-            case (init_counter_6)
+            case (init_counter_8)
             0:
             begin
                 ctr_word <= 4'hf;
@@ -104,11 +104,11 @@ begin
                 en_pe <= 1;
                 mem20_en_input <= 0;
             end
-            5: // adjustable
+            7: // adjustable
             begin
                 ctr_word <= 4'h0;
                 en_pe <= 0;
-                mem20_en_input <= 01;
+                mem20_en_input <= 1;
             end
             default:
             begin

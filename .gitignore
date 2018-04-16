@@ -1,7 +1,14 @@
 ME.cr.mti
 ME.mpf
-work
+/work
 vsim.wlf
 wave.do
 wlftmx7m96
-24时序分析.xlsx
+/LICENSE.md/*
+
+/DC/outputs/*
+/DC/reports/*
+!/DC/scripts/dc.tcl
+!/DC/scripts/ME.con
+!/DC/scripts/read.tcl
+/DC/work/*
