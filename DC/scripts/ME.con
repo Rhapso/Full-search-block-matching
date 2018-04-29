@@ -3,6 +3,7 @@ reset_design
 
 #---------------- SET AREA CONSTRAINT ----------------
 # 1
+set_max_area 2000000
 
 #---------------- SET TIMING CONSTRAINTS ----------------
 # 2.1 Set clock
