@@ -5,7 +5,7 @@ gui_set_current_task -name {Design Planning}
 ######################################################################
 # Create corners and P/G pads and define all pad cell locations:
 source pad_cell_cons.tcl
-initialize_floorplan -core_utilization 0.8 -left_io2core 30.0 -bottom_io2core 30.0 -right_io2core 30.0 -top_io2core 30.0
+initialize_floorplan -core_utilization 0.5 -left_io2core 30.0 -bottom_io2core 30.0 -right_io2core 30.0 -top_io2core 30.0
 source derive_pg.tcl
 save_mw_cel -as 2_1_floorplan_init
 
